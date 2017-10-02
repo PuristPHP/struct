@@ -1,0 +1,22 @@
+{
+    "name": "purist/struct",
+    "description": "Struct implementation for PHP",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Nicholas Ruunu",
+            "email": "nicholas@ruu.nu"
+        }
+    ],
+    "require": {
+        "php": "^7.0",
+        "phpspec/phpspec": "^4.0"
+    },
+    "require-dev": {},
+    "autoload": {
+        "psr-4": {
+            "Purist\\Struct\\": "src"
+        }
+    }
+}

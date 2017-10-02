@@ -1,0 +1,4 @@
+suites:
+  struct_suite:
+    namespace: Purist\Struct
+    psr4_prefix: Purist\Struct
