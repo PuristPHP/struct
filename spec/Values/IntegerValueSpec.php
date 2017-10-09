@@ -20,6 +20,7 @@ class IntegerValueSpec extends ObjectBehavior
         $this->validate(123.12)->shouldReturn(false);
         $this->validate('123.12')->shouldReturn(false);
         $this->validate(true)->shouldReturn(false);
+        $this->validate(null)->shouldReturn(false);
     }
 
     function it_will_validate_integers()

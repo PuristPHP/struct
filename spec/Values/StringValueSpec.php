@@ -20,6 +20,7 @@ class StringValueSpec extends ObjectBehavior
         $this->validate(true)->shouldReturn(false);
         $this->validate(false)->shouldReturn(false);
         $this->validate(123)->shouldReturn(false);
+        $this->validate(null)->shouldReturn(false);
     }
 
     function it_will_validate_strings()

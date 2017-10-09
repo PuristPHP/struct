@@ -7,7 +7,7 @@ final class BooleanValue implements Value
 {
     public function validate($value): bool
     {
-        return filter_var(
+        return $value !== null && filter_var(
             $value,
             FILTER_VALIDATE_BOOLEAN,
             FILTER_NULL_ON_FAILURE

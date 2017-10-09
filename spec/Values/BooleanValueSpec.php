@@ -20,6 +20,7 @@ class BooleanValueSpec extends ObjectBehavior
         $this->validate(new \stdClass())->shouldReturn(false);
         $this->validate([])->shouldReturn(false);
         $this->validate(123.123)->shouldReturn(false);
+        $this->validate(null)->shouldReturn(false);
     }
 
     function it_will_validate_booleans()
