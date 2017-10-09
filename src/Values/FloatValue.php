@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Purist\Struct\Values;
 
-final class FloatValue
+final class FloatValue implements Value
 {
     public function validate($value): bool
     {
