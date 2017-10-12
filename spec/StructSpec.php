@@ -2,7 +2,7 @@
 
 namespace spec\Purist\Struct;
 
-use Purist\Struct\ArrayValue;
+use Purist\Struct\Struct;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Purist\Struct\BooleanValue;
@@ -11,7 +11,7 @@ use Purist\Struct\IntegerValue;
 use Purist\Struct\NullableValue;
 use Purist\Struct\StringValue;
 
-class ArrayValueSpec extends ObjectBehavior
+class StructSpec extends ObjectBehavior
 {
     function let() {
         $this->beConstructedWith(
@@ -20,7 +20,7 @@ class ArrayValueSpec extends ObjectBehavior
                 'aString' => new StringValue(),
                 'aFloat' => new FloatValue(),
                 'aNullableFloat' => new NullableValue(new FloatValue()),
-                'aStruct' => new ArrayValue(
+                'aStruct' => new Struct(
                     [
                         'anInteger' => new IntegerValue(),
                         'aString' => new StringValue(),
@@ -34,7 +34,7 @@ class ArrayValueSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(\Purist\Struct\ArrayValue::class);
+        $this->shouldHaveType(\Purist\Struct\Struct::class);
     }
 
     function it_will_not_validate_invalid_arrays()

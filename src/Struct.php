@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Purist\Struct;
 
-final class ArrayValue implements Value
+final class Struct implements Value
 {
     private $struct;
 
