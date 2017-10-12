@@ -1,6 +1,6 @@
 <?php
 
-namespace Purist\Struct\Values;
+namespace Purist\Struct;
 
 class IndexedArrayValue implements Value
 {

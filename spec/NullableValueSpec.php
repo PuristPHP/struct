@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\Purist\Struct\Values;
+namespace spec\Purist\Struct;
 
-use Purist\Struct\Values\NullableValue;
+use Purist\Struct\NullableValue;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Purist\Struct\Values\Value;
+use Purist\Struct\Value;
 
 class NullableValueSpec extends ObjectBehavior
 {

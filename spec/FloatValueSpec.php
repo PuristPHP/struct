@@ -1,8 +1,8 @@
 <?php
 
-namespace spec\Purist\Struct\Values;
+namespace spec\Purist\Struct;
 
-use Purist\Struct\Values\FloatValue;
+use Purist\Struct\FloatValue;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 

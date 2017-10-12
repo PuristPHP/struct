@@ -1,15 +1,15 @@
 <?php
 
-namespace spec\Purist\Struct\Values;
+namespace spec\Purist\Struct;
 
-use Purist\Struct\Values\ArrayValue;
+use Purist\Struct\ArrayValue;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Purist\Struct\Values\BooleanValue;
-use Purist\Struct\Values\FloatValue;
-use Purist\Struct\Values\IntegerValue;
-use Purist\Struct\Values\NullableValue;
-use Purist\Struct\Values\StringValue;
+use Purist\Struct\BooleanValue;
+use Purist\Struct\FloatValue;
+use Purist\Struct\IntegerValue;
+use Purist\Struct\NullableValue;
+use Purist\Struct\StringValue;
 
 class ArrayValueSpec extends ObjectBehavior
 {
@@ -34,7 +34,7 @@ class ArrayValueSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(\Purist\Struct\Values\ArrayValue::class);
+        $this->shouldHaveType(\Purist\Struct\ArrayValue::class);
     }
 
     function it_will_not_validate_invalid_arrays()

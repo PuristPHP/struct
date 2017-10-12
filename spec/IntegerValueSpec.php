@@ -1,8 +1,8 @@
 <?php
 
-namespace spec\Purist\Struct\Values;
+namespace spec\Purist\Struct;
 
-use Purist\Struct\Values\IntegerValue;
+use Purist\Struct\IntegerValue;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 

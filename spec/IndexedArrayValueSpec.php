@@ -1,15 +1,15 @@
 <?php
 
-namespace spec\Purist\Struct\Values;
+namespace spec\Purist\Struct;
 
-use Purist\Struct\Values\AnyValue;
-use Purist\Struct\Values\BooleanValue;
-use Purist\Struct\Values\FloatValue;
-use Purist\Struct\Values\IndexedArrayValue;
+use Purist\Struct\AnyValue;
+use Purist\Struct\BooleanValue;
+use Purist\Struct\FloatValue;
+use Purist\Struct\IndexedArrayValue;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Purist\Struct\Values\IntegerValue;
-use Purist\Struct\Values\StringValue;
+use Purist\Struct\IntegerValue;
+use Purist\Struct\StringValue;
 
 class IndexedArrayValueSpec extends ObjectBehavior
 {
