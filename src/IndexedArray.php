@@ -2,7 +2,7 @@
 
 namespace Purist\Struct;
 
-class IndexedArrayValue implements Value
+class IndexedArray implements Value
 {
     private $value;
 

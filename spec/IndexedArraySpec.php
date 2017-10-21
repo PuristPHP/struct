@@ -5,17 +5,17 @@ namespace spec\Purist\Struct;
 use Purist\Struct\AnyValue;
 use Purist\Struct\BooleanValue;
 use Purist\Struct\FloatValue;
-use Purist\Struct\IndexedArrayValue;
+use Purist\Struct\IndexedArray;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Purist\Struct\IntegerValue;
 use Purist\Struct\StringValue;
 
-class IndexedArrayValueSpec extends ObjectBehavior
+class IndexedArraySpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(IndexedArrayValue::class);
+        $this->shouldHaveType(IndexedArray::class);
     }
 
     function it_will_validate_indexed_array_with_value()
