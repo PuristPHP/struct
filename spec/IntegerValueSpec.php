@@ -2,12 +2,19 @@
 
 namespace spec\Purist\Struct;
 
+use Purist\Struct\Constraint\Minimum;
 use Purist\Struct\IntegerValue;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Purist\Struct\ValidationFailed;
 
 class IntegerValueSpec extends ObjectBehavior
 {
+    function let()
+    {
+        $this->beConstructedWith(new Minimum(10));
+    }
+
     function it_is_initializable()
     {
         $this->shouldHaveType(IntegerValue::class);
@@ -31,8 +38,10 @@ class IntegerValueSpec extends ObjectBehavior
 
     function it_will_throw_exception_getting_invalid_values()
     {
-        $this->shouldThrow(\InvalidArgumentException::class)->duringGet('string');
-        $this->shouldThrow(\InvalidArgumentException::class)->duringGet('111hello');
+        $this->shouldThrow(ValidationFailed::class)->duringGet('string');
+        $this->shouldThrow(ValidationFailed::class)->duringGet('111hello');
+        $this->shouldThrow(ValidationFailed::class)->duringGet(9);
+        $this->shouldThrow(ValidationFailed::class)->duringGet(8);
     }
 
     function it_will_return_valid_value_as_integer()

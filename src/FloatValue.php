@@ -7,7 +7,8 @@ final class FloatValue implements Value
 {
     public function validate($value): bool
     {
-        return filter_var($value, FILTER_VALIDATE_FLOAT) !== false;
+        return is_bool($value) === false
+            && filter_var($value, FILTER_VALIDATE_FLOAT) !== false;
     }
 
     public function get($value): float

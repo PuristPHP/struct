@@ -5,50 +5,40 @@ namespace Purist\Struct;
 
 final class Struct implements Value
 {
-    private $struct;
+    private $members;
 
-    /**
-     * @param Value[] $struct Keys are struct parameters
-     */
-    public function __construct(array $struct)
+    public function __construct(Member ...$members)
     {
-        $this->struct = $struct;
+        $this->members = $members;
     }
 
-    public function validate($values): bool
+    public function validate($input): bool
     {
-        if (!is_array($values)) {
+        if (!is_array($input)) {
             return false;
         }
 
-        /** @var Value $value */
-        foreach ($this->struct as $key => $value) {
-            if ($value->validate($values[$key] ?? null)) {
-                continue;
+        foreach ($this->members as $member) {
+            if (!$member->valid($input)) {
+                return false;
             }
-
-            return false;
         }
 
         return true;
     }
 
-    public function get($values): array
+    public function get($input): array
     {
-        if (!is_array($values)) {
+        if (!is_array($input)) {
             throw new \InvalidArgumentException(
-                sprintf('An array was expected but %s was passed', gettype($values))
+                sprintf('An array was expected but %s was passed', gettype($input))
             );
         }
 
         return array_reduce(
-            array_keys($this->struct),
-            function(array $carry, string $key) use ($values) {
-                if (array_key_exists($key, $values)) {
-                    $carry[$key] = $this->struct[$key]->get($values[$key]);
-                }
-
-                return $carry;
+            $this->members,
+            function (array $carry, Member $member) use ($input) {
+                return $carry + $member->get($input);
             },
             []
         );

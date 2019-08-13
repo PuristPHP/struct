@@ -18,6 +18,7 @@ class FloatValueSpec extends ObjectBehavior
         $this->validate('string')->shouldReturn(false);
         $this->validate('11.23hello')->shouldReturn(false);
         $this->validate(null)->shouldReturn(false);
+        $this->validate(true)->shouldReturn(false);
     }
 
     function it_will_validate_floats()
