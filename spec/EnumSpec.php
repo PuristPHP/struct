@@ -24,7 +24,7 @@ class EnumSpec extends ObjectBehavior
     function it_will_fail_passing_empty_array()
     {
         $this->beConstructedWith([]);
-        $this->shouldThrow(ValidationFailed::class)->duringInstantiation();
+        $this->shouldThrow(\InvalidArgumentException::class)->duringInstantiation();
     }
 
     function it_validates_against_set_of_values()

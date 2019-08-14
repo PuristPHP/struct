@@ -5,6 +5,7 @@ namespace spec\Purist\Struct;
 use Purist\Struct\StringValue;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Purist\Struct\ValidationFailed;
 
 class StringValueSpec extends ObjectBehavior
 {
@@ -39,8 +40,8 @@ class StringValueSpec extends ObjectBehavior
 
     function it_will_throw_exception_getting_invalid_values()
     {
-        $this->shouldThrow(\InvalidArgumentException::class)->duringGet(123);
-        $this->shouldThrow(\InvalidArgumentException::class)->duringGet(true);
+        $this->shouldThrow(ValidationFailed::class)->duringGet(123);
+        $this->shouldThrow(ValidationFailed::class)->duringGet(true);
     }
 
     function it_will_return_valid_string_value()

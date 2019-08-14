@@ -13,8 +13,7 @@ class AnyOfValues implements Value
     }
 
     /**
-     * @param mixed $value
-     * @return bool
+     * @inheritDoc
      */
     public function validate($value): bool
     {
@@ -28,9 +27,7 @@ class AnyOfValues implements Value
     }
 
     /**
-     * @param mixed $value
-     * @return mixed
-     * @throws \InvalidArgumentException
+     * @inheritDoc
      */
     public function get($value)
     {
@@ -40,9 +37,9 @@ class AnyOfValues implements Value
             }
         }
 
-        throw new \InvalidArgumentException(
+        throw new ValidationFailed(
             sprintf(
-                '%s (%s) is not valid of: %s',
+                '%s (%s) is not valid value of: %s',
                 $value,
                 gettype($value),
                 implode(

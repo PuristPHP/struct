@@ -13,18 +13,28 @@ class OptionalMember implements Member
         $this->value = $value;
     }
 
+    /**
+     * @inheritDoc
+     */
+    public function valid(array $input): bool
+    {
+        return !array_key_exists($this->name, $input)
+            || $this->value->validate($input[$this->name]);
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function get(array $input): array
     {
         if (!array_key_exists($this->name, $input)) {
             return [$this->name => null];
         }
 
-        return [$this->name => $this->value->get($input[$this->name])];
-    }
-
-    public function valid(array $input): bool
-    {
-        return !array_key_exists($this->name, $input)
-            || $this->value->validate($input[$this->name]);
+        try {
+            return [$this->name => $this->value->get($input[$this->name])];
+        } catch (ValidationFailed $e) {
+            throw ValidationFailed::member($this->name, 'optional', $e);
+        }
     }
 }

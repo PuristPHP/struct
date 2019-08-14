@@ -15,6 +15,7 @@ use Purist\Struct\PartialStruct;
 use Purist\Struct\RequiredMember;
 use Purist\Struct\StringValue;
 use Purist\Struct\Struct;
+use Purist\Struct\ValidationFailed;
 
 class PartialStructSpec extends ObjectBehavior
 {
@@ -89,7 +90,7 @@ class PartialStructSpec extends ObjectBehavior
 
     function it_will_throw_exception_getting_invalid_values()
     {
-        $this->shouldThrow(\InvalidArgumentException::class)->duringGet(
+        $this->shouldThrow(ValidationFailed::class)->duringGet(
             [
                 'aNumber' => '123.5',
                 'anInteger' => '123',
@@ -104,8 +105,8 @@ class PartialStructSpec extends ObjectBehavior
                 ],
             ]
         );
-        $this->shouldThrow(\InvalidArgumentException::class)->duringGet(new \stdClass());
-        $this->shouldThrow(\InvalidArgumentException::class)->duringGet('not-an-array');
+        $this->shouldThrow(ValidationFailed::class)->duringGet(new \stdClass());
+        $this->shouldThrow(ValidationFailed::class)->duringGet('not-an-array');
     }
 
     function it_will_return_a_validated_array_with_correct_types()

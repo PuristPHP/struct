@@ -14,6 +14,9 @@ final class IntegerValue implements Value
         $this->constraints = $constraints;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function validate($value): bool
     {
         if (is_bool($value) || filter_var($value, FILTER_VALIDATE_INT) === false) {
@@ -29,10 +32,13 @@ final class IntegerValue implements Value
         return true;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function get($value): int
     {
         if (!$this->validate($value)) {
-            throw new ValidationFailed('integer', $value, ...$this->constraints);
+            throw ValidationFailed::value('integer', $value, null, ...$this->constraints);
         }
 
         return (int) $value;

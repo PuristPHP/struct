@@ -10,12 +10,17 @@ final class Enum implements Value
     public function __construct(array $values)
     {
         if ($values === []) {
-            throw new ValidationFailed('enum', $values);
+            throw new \InvalidArgumentException(
+                'The enum definition can not be empty'
+            );
         }
 
         $this->values = $values;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function validate($value): bool
     {
         return in_array($value, $this->values, true);
@@ -27,7 +32,7 @@ final class Enum implements Value
     public function get($value)
     {
         if (!$this->validate($value)) {
-            throw new ValidationFailed('enum', $value);
+            throw ValidationFailed::value('enum', $value);
         }
 
         return $value;

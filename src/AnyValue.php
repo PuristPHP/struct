@@ -1,17 +1,20 @@
 <?php
+declare(strict_types=1);
 
 namespace Purist\Struct;
 
 class AnyValue implements Value
 {
+    /**
+     * @inheritDoc
+     */
     public function validate($value): bool
     {
         return true;
     }
 
     /**
-     * @param mixed $value
-     * @return mixed
+     * @inheritDoc
      */
     public function get($value)
     {

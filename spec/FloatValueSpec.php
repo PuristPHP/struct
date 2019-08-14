@@ -5,6 +5,7 @@ namespace spec\Purist\Struct;
 use Purist\Struct\FloatValue;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Purist\Struct\ValidationFailed;
 
 class FloatValueSpec extends ObjectBehavior
 {
@@ -31,8 +32,8 @@ class FloatValueSpec extends ObjectBehavior
 
     function it_will_throw_exception_getting_invalid_values()
     {
-        $this->shouldThrow(\InvalidArgumentException::class)->duringGet('string');
-        $this->shouldThrow(\InvalidArgumentException::class)->duringGet('11.23hello');
+        $this->shouldThrow(ValidationFailed::class)->duringGet('string');
+        $this->shouldThrow(ValidationFailed::class)->duringGet('11.23hello');
     }
 
     function it_will_return_valid_value_as_float()

@@ -12,14 +12,21 @@ final class Struct implements Value
         $this->members = $members;
     }
 
-    public function validate($input): bool
+    /**
+     * @inheritDoc
+     */
+    public function validate($value): bool
     {
-        if (!is_array($input)) {
+        if ($value instanceof \stdClass) {
+            $value = (array) $value;
+        }
+
+        if (!is_array($value)) {
             return false;
         }
 
         foreach ($this->members as $member) {
-            if (!$member->valid($input)) {
+            if (!$member->valid($value)) {
                 return false;
             }
         }
@@ -27,18 +34,23 @@ final class Struct implements Value
         return true;
     }
 
-    public function get($input): array
+    /**
+     * @inheritDoc
+     */
+    public function get($value): array
     {
-        if (!is_array($input)) {
-            throw new \InvalidArgumentException(
-                sprintf('An array was expected but %s was passed', gettype($input))
-            );
+        if ($value instanceof \stdClass) {
+            $value = (array) $value;
+        }
+
+        if (!is_array($value)) {
+            throw ValidationFailed::value('struct', $value);
         }
 
         return array_reduce(
             $this->members,
-            function (array $carry, Member $member) use ($input) {
-                return $carry + $member->get($input);
+            function (array $carry, Member $member) use ($value) {
+                return $carry + $member->get($value);
             },
             []
         );

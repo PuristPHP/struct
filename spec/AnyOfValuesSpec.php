@@ -7,6 +7,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Purist\Struct\FloatValue;
 use Purist\Struct\IntegerValue;
+use Purist\Struct\ValidationFailed;
 use Purist\Struct\Value;
 
 class AnyOfValuesSpec extends ObjectBehavior
@@ -43,7 +44,7 @@ class AnyOfValuesSpec extends ObjectBehavior
 
     function it_throws_if_no_values_validates()
     {
-        $this->shouldThrow(\InvalidArgumentException::class)->during(
+        $this->shouldThrow(ValidationFailed::class)->during(
             'get',
             ['hello']
         );

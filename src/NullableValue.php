@@ -12,17 +12,23 @@ final class NullableValue implements Value
         $this->value = $value;
     }
 
-    public function validate($value): bool
+    /**
+     * @inheritDoc
+     */
+    public function validate($values): bool
     {
-        return $value === null || $value === '' || $this->value->validate($value);
+        return $values === null || $values === '' || $this->value->validate($values);
     }
 
-    public function get($value)
+    /**
+     * @inheritDoc
+     */
+    public function get($values)
     {
-        if ($value === null || $value === '') {
+        if ($values === null || $values === '') {
             return null;
         }
 
-        return $this->value->get($value);
+        return $this->value->get($values);
     }
 }

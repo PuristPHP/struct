@@ -5,6 +5,9 @@ namespace Purist\Struct;
 
 final class BooleanValue implements Value
 {
+    /**
+     * @inheritDoc
+     */
     public function validate($value): bool
     {
         return $value !== null && filter_var(
@@ -14,14 +17,15 @@ final class BooleanValue implements Value
         ) !== null;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function get($value): bool
     {
         if (!$this->validate($value)) {
-            throw new \InvalidArgumentException(
-                sprintf('%s (%s) is not a valid boolean', $value, gettype($value))
-            );
+            throw ValidationFailed::value('boolean', $value);
         }
 
-        return filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+        return filter_var($value, FILTER_VALIDATE_BOOLEAN);
     }
 }

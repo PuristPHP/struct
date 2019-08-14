@@ -7,6 +7,7 @@ use Purist\Struct\IntegerValue;
 use Purist\Struct\RequiredMember;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Purist\Struct\ValidationFailed;
 
 class RequiredMemberSpec extends ObjectBehavior
 {
@@ -27,7 +28,7 @@ class RequiredMemberSpec extends ObjectBehavior
     function it_will_throw_exception_when_name_is_missing_from_input_array()
     {
         $this->beConstructedWith('missingName', new AnyValue());
-        $this->shouldThrow(\InvalidArgumentException::class)->duringGet(['anotherName' => 'test']);
+        $this->shouldThrow(ValidationFailed::class)->duringGet(['anotherName' => 'test']);
     }
 
     function it_will_validate_input_array()

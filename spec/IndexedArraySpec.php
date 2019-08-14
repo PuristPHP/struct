@@ -40,8 +40,8 @@ class IndexedArraySpec extends ObjectBehavior
     function it_will_throw_exception_not_getting_indexed_array()
     {
         $this->beConstructedWith(new AnyValue());
-        $this->shouldThrow(\InvalidArgumentException::class)->duringGet(['string' => 'string']);
-        $this->shouldThrow(\InvalidArgumentException::class)->duringGet(true);
+        $this->shouldThrow(ValidationFailed::class)->duringGet(['string' => 'string']);
+        $this->shouldThrow(ValidationFailed::class)->duringGet(true);
     }
 
     function it_will_throw_exception_getting_invalid_values()

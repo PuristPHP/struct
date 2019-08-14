@@ -12,14 +12,21 @@ final class PartialStruct implements Value
         $this->members = $members;
     }
 
-    public function validate($input): bool
+    /**
+     * @inheritDoc
+     */
+    public function validate($values): bool
     {
-        if (!is_array($input)) {
+        if ($values instanceof \stdClass) {
+            $values = (array) $values;
+        }
+
+        if (!is_array($values)) {
             return false;
         }
 
         foreach ($this->members as $member) {
-            if (!$member->valid($input)) {
+            if (!$member->valid($values)) {
                 return false;
             }
         }
@@ -27,20 +34,25 @@ final class PartialStruct implements Value
         return true;
     }
 
-    public function get($input): array
+    /**
+     * @inheritDoc
+     */
+    public function get($values): array
     {
-        if (!is_array($input)) {
-            throw new \InvalidArgumentException(
-                sprintf('An array was expected but %s was passed', gettype($input))
-            );
+        if ($values instanceof \stdClass) {
+            $values = (array) $values;
+        }
+
+        if (!is_array($values)) {
+            throw ValidationFailed::value('partial struct', $values);
         }
 
         return array_reduce(
             $this->members,
-            function (array $carry, Member $member) use ($input) {
-                return array_replace($carry, $member->get($input));
+            function (array $carry, Member $member) use ($values) {
+                return array_replace($carry, $member->get($values));
             },
-            $input
+            $values
         );
     }
 }

@@ -22,7 +22,7 @@ abstract class AbstractStruct
     }
 
     /**
-     * @throws \InvalidArgumentException
+     * @throws ValidationFailed
      */
     public function toArray(): array
     {

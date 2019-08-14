@@ -8,9 +8,37 @@ use Purist\Struct\Constraint\Constraint;
 
 final class ValidationFailed extends \Exception
 {
-    public function __construct(string $type, $value, Constraint ...$constraints)
-    {
-        parent::__construct(
+    public function __construct(
+        string $message = '',
+        int $code = 0,
+        ?\Throwable $previous = null
+    ) {
+        if ($previous !== null) {
+            $message .= PHP_EOL . $previous->getMessage();
+        }
+
+        parent::__construct($message, $code, $previous);
+    }
+
+    public static function member(
+        string $name,
+        string $type,
+        ?\Throwable $previous = null
+    ): self {
+        return new self(
+            sprintf('Validation failed for %s member: %s', $type, $name),
+            0,
+            $previous
+        );
+    }
+
+    public static function value(
+        string $type,
+        $value,
+        ?\Throwable $previous = null,
+        Constraint ...$constraints
+    ): self {
+        return new self(
             implode(
                 PHP_EOL,
                 array_reduce(
@@ -35,7 +63,9 @@ final class ValidationFailed extends \Exception
                         ),
                     ]
                 )
-            )
+            ),
+            0,
+            $previous
         );
     }
 }

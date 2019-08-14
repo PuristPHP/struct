@@ -12,8 +12,8 @@ interface Value
 
     /**
      * @param mixed $value
-     * @throws \InvalidArgumentException
      * @return mixed
+     * @throws ValidationFailed
      */
     public function get($value);
 }

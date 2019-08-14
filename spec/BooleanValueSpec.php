@@ -5,6 +5,7 @@ namespace spec\Purist\Struct;
 use Purist\Struct\BooleanValue;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Purist\Struct\ValidationFailed;
 
 class BooleanValueSpec extends ObjectBehavior
 {
@@ -39,8 +40,8 @@ class BooleanValueSpec extends ObjectBehavior
 
     function it_will_throw_exception_getting_invalid_values()
     {
-        $this->shouldThrow(\InvalidArgumentException::class)->duringGet('string');
-        $this->shouldThrow(\InvalidArgumentException::class)->duringGet(123);
+        $this->shouldThrow(ValidationFailed::class)->duringGet('string');
+        $this->shouldThrow(ValidationFailed::class)->duringGet(123);
     }
 
     function it_will_return_valid_value_as_boolean()

@@ -5,7 +5,10 @@ namespace Purist\Struct;
 
 interface Member
 {
-    public function get(array $input): array;
-
     public function valid(array $input): bool;
+
+    /**
+     * @throws ValidationFailed
+     */
+    public function get(array $input): array;
 }
