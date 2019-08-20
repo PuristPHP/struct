@@ -6,9 +6,9 @@ interface Value
 {
     /**
      * @param mixed $value
-     * @return bool
+     * @return Validation
      */
-    public function validate($value): bool;
+    public function validate($value): Validation;
 
     /**
      * @param mixed $value

@@ -5,7 +5,9 @@ namespace Purist\Struct;
 
 interface Member
 {
-    public function valid(array $input): bool;
+    public function name(): string;
+
+    public function validate(array $input): Validation;
 
     /**
      * @throws ValidationFailed

@@ -15,29 +15,31 @@ class IndexedArray implements Value
     /**
      * @inheritDoc
      */
-    public function validate($values): bool
+    public function validate($values): Validation
     {
         if ($values instanceof \stdClass) {
             $values = (array) $values;
         }
 
         if (!is_array($values)) {
-            return false;
+            return Validation::failedValue('IndexedArrayValue', $values);
         }
 
         $validKeys = array_filter(array_map('is_int', array_keys($values)));
 
         if (count($validKeys) !== count($values)) {
-            return false;
+            return Validation::failedValue('IndexedArrayValue', $values);
         }
 
         foreach ($values as $value) {
-            if (!$this->value->validate($value)) {
-                return false;
+            $validation = $this->value->validate($value);
+
+            if ($validation->hasErrors()) {
+                return Validation::failedValue('IndexedArrayValue', $values, $validation);
             }
         }
 
-        return true;
+        return Validation::successful();
     }
 
     /**
@@ -49,15 +51,19 @@ class IndexedArray implements Value
             $values = (array) $values;
         }
 
-        if (!$this->validate($values)) {
-            throw ValidationFailed::value('indexed array', $values);
+        $validation = $this->validate($values);
+
+        if ($validation->hasErrors()) {
+            throw ValidationFailed::fromValidation($validation);
         }
 
-        return array_values(array_map(
-            function($value) {
-                return $this->value->get($value);
-            },
-            $values
-        ));
+        return array_values(
+            array_map(
+                function ($value) {
+                    return $this->value->get($value);
+                },
+                $values
+            )
+        );
     }
 }

@@ -22,18 +22,18 @@ class IntegerValueSpec extends ObjectBehavior
 
     function it_will_not_validate_invalid_integers()
     {
-        $this->validate('string')->shouldReturn(false);
-        $this->validate('1111hello')->shouldReturn(false);
-        $this->validate(123.12)->shouldReturn(false);
-        $this->validate('123.12')->shouldReturn(false);
-        $this->validate(true)->shouldReturn(false);
-        $this->validate(null)->shouldReturn(false);
+        $this->validate('string')->callOnWrappedObject('hasErrors')->shouldReturn(true);
+        $this->validate('1111hello')->callOnWrappedObject('hasErrors')->shouldReturn(true);
+        $this->validate(123.12)->callOnWrappedObject('hasErrors')->shouldReturn(true);
+        $this->validate('123.12')->callOnWrappedObject('hasErrors')->shouldReturn(true);
+        $this->validate(true)->callOnWrappedObject('hasErrors')->shouldReturn(true);
+        $this->validate(null)->callOnWrappedObject('hasErrors')->shouldReturn(true);
     }
 
     function it_will_validate_integers()
     {
-        $this->validate(123)->shouldReturn(true);
-        $this->validate('456')->shouldReturn(true);
+        $this->validate(123)->callOnWrappedObject('hasErrors')->shouldReturn(false);
+        $this->validate('456')->callOnWrappedObject('hasErrors')->shouldReturn(false);
     }
 
     function it_will_throw_exception_getting_invalid_values()

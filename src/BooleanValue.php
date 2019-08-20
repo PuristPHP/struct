@@ -8,13 +8,16 @@ final class BooleanValue implements Value
     /**
      * @inheritDoc
      */
-    public function validate($value): bool
+    public function validate($value): Validation
     {
-        return $value !== null && filter_var(
-            $value,
-            FILTER_VALIDATE_BOOLEAN,
-            FILTER_NULL_ON_FAILURE
-        ) !== null;
+        if (
+            $value !== null
+            && filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) !== null
+        ) {
+            return Validation::successful();
+        }
+
+        return Validation::failedValue('BooleanValue', $value);
     }
 
     /**
@@ -22,8 +25,10 @@ final class BooleanValue implements Value
      */
     public function get($value): bool
     {
-        if (!$this->validate($value)) {
-            throw ValidationFailed::value('boolean', $value);
+        $validation = $this->validate($value);
+
+        if ($validation->hasErrors()) {
+            throw ValidationFailed::fromValidation($validation);
         }
 
         return filter_var($value, FILTER_VALIDATE_BOOLEAN);

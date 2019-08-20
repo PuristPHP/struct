@@ -15,23 +15,23 @@ final class PartialStruct implements Value
     /**
      * @inheritDoc
      */
-    public function validate($values): bool
+    public function validate($values): Validation
     {
         if ($values instanceof \stdClass) {
             $values = (array) $values;
         }
 
         if (!is_array($values)) {
-            return false;
+            return Validation::failed(
+                sprintf('[PartialStruct] input need to be array, %s passed', gettype($values))
+            );
         }
 
-        foreach ($this->members as $member) {
-            if (!$member->valid($values)) {
-                return false;
-            }
-        }
-
-        return true;
+        return Validation::validateMembers(
+            'PartialStruct',
+            $values,
+            ...$this->members
+        );
     }
 
     /**
@@ -43,8 +43,10 @@ final class PartialStruct implements Value
             $values = (array) $values;
         }
 
-        if (!is_array($values)) {
-            throw ValidationFailed::value('partial struct', $values);
+        $validation = $this->validate($values);
+
+        if ($validation->hasErrors()) {
+            throw ValidationFailed::fromValidation($validation);
         }
 
         return array_reduce(

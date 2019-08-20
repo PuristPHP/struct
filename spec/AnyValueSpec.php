@@ -15,11 +15,11 @@ class AnyValueSpec extends ObjectBehavior
 
     function it_will_always_validate_as_true()
     {
-        $this->validate('anything')->shouldReturn(true);
-        $this->validate(123)->shouldReturn(true);
-        $this->validate(true)->shouldReturn(true);
-        $this->validate(new \stdClass())->shouldReturn(true);
-        $this->validate([])->shouldReturn(true);
+        $this->validate('anything')->callOnWrappedObject('hasErrors')->shouldReturn(false);
+        $this->validate(123)->callOnWrappedObject('hasErrors')->shouldReturn(false);
+        $this->validate(true)->callOnWrappedObject('hasErrors')->shouldReturn(false);
+        $this->validate(new \stdClass())->callOnWrappedObject('hasErrors')->shouldReturn(false);
+        $this->validate([])->callOnWrappedObject('hasErrors')->shouldReturn(false);
     }
 
     function it_will_always_return_passed_value()

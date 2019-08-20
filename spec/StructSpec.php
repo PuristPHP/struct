@@ -65,7 +65,7 @@ class StructSpec extends ObjectBehavior
                     'aBoolean' => false,
                 ],
             ]
-        )->shouldReturn(false);
+        )->callOnWrappedObject('hasErrors')->shouldReturn(true);
     }
 
     function it_will_validate_arrays()
@@ -84,7 +84,7 @@ class StructSpec extends ObjectBehavior
                     'aBoolean' => 'true',
                 ],
             ]
-        )->shouldReturn(true);
+        )->callOnWrappedObject('hasErrors')->shouldReturn(false);
     }
 
     function it_will_throw_exception_getting_invalid_values()

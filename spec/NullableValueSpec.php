@@ -5,6 +5,7 @@ namespace spec\Purist\Struct;
 use Purist\Struct\NullableValue;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Purist\Struct\Validation;
 use Purist\Struct\Value;
 
 class NullableValueSpec extends ObjectBehavior
@@ -21,14 +22,14 @@ class NullableValueSpec extends ObjectBehavior
 
     function it_will_validate_as_true_if_null_or_if_value_validates(Value $value)
     {
-        $this->validate(null)->shouldReturn(true);
-        $this->validate('')->shouldReturn(true);
+        $this->validate(null)->callOnWrappedObject('hasErrors')->shouldReturn(false);
+        $this->validate('')->callOnWrappedObject('hasErrors')->shouldReturn(false);
 
-        $value->validate('string')->willReturn(true);
-        $this->validate('string')->shouldReturn(true);
+        $value->validate('string')->willReturn($validation = Validation::successful());
+        $this->validate('string')->shouldReturn($validation);
 
-        $value->validate(true)->willReturn(false);
-        $this->validate(true)->shouldReturn(false);
+        $value->validate(true)->willReturn($validation = Validation::failed('test'));
+        $this->validate(true)->shouldReturn($validation);
     }
 
     function it_will_throw_exception_when_getting_not_null_that_value_doesnt_validate(

@@ -16,18 +16,18 @@ class StringValueSpec extends ObjectBehavior
 
     function it_will_not_validate_invalid_strings()
     {
-        $this->validate(new \stdClass())->shouldReturn(false);
-        $this->validate([])->shouldReturn(false);
-        $this->validate(true)->shouldReturn(false);
-        $this->validate(false)->shouldReturn(false);
-        $this->validate(123)->shouldReturn(false);
-        $this->validate(null)->shouldReturn(false);
+        $this->validate(new \stdClass())->callOnWrappedObject('hasErrors')->shouldReturn(true);
+        $this->validate([])->callOnWrappedObject('hasErrors')->shouldReturn(true);
+        $this->validate(true)->callOnWrappedObject('hasErrors')->shouldReturn(true);
+        $this->validate(false)->callOnWrappedObject('hasErrors')->shouldReturn(true);
+        $this->validate(123)->callOnWrappedObject('hasErrors')->shouldReturn(true);
+        $this->validate(null)->callOnWrappedObject('hasErrors')->shouldReturn(true);
     }
 
     function it_will_validate_strings()
     {
-        $this->validate('123')->shouldReturn(true);
-        $this->validate('@@@hello@@@')->shouldReturn(true);
+        $this->validate('123')->callOnWrappedObject('hasErrors')->shouldReturn(false);
+        $this->validate('@@@hello@@@')->callOnWrappedObject('hasErrors')->shouldReturn(false);
         $this->validate(
             new class {
                 public function __toString()
@@ -35,7 +35,7 @@ class StringValueSpec extends ObjectBehavior
                     return 'string';
                 }
             }
-            )->shouldReturn(true);
+            )->callOnWrappedObject('hasErrors')->shouldReturn(false);
     }
 
     function it_will_throw_exception_getting_invalid_values()

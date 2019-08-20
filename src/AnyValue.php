@@ -8,9 +8,9 @@ class AnyValue implements Value
     /**
      * @inheritDoc
      */
-    public function validate($value): bool
+    public function validate($value): Validation
     {
-        return true;
+        return Validation::successful();
     }
 
     /**

@@ -22,19 +22,19 @@ class IndexedArraySpec extends ObjectBehavior
     function it_will_validate_indexed_array_with_value()
     {
         $this->beConstructedWith(new StringValue());
-        $this->validate(['string', 'anotherString'])->shouldReturn(true);
+        $this->validate(['string', 'anotherString'])->callOnWrappedObject('hasErrors')->shouldReturn(false);
     }
 
     function it_will_not_validate_indexed_array_with_wrong_values()
     {
         $this->beConstructedWith(new FloatValue());
-        $this->validate(['string', true])->shouldReturn(false);
+        $this->validate(['string', true])->callOnWrappedObject('hasErrors')->shouldReturn(true);
     }
 
     function it_will_not_validate_associative_arrays_with_correct_values()
     {
         $this->beConstructedWith(new FloatValue());
-        $this->validate([5.5, 'float' => 25.5])->shouldReturn(false);
+        $this->validate([5.5, 'float' => 25.5])->callOnWrappedObject('hasErrors')->shouldReturn(true);
     }
 
     function it_will_throw_exception_not_getting_indexed_array()

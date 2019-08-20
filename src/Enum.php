@@ -7,6 +7,9 @@ final class Enum implements Value
 {
     private $values;
 
+    /**
+     * @throws \InvalidArgumentException
+     */
     public function __construct(array $values)
     {
         if ($values === []) {
@@ -21,9 +24,13 @@ final class Enum implements Value
     /**
      * @inheritDoc
      */
-    public function validate($value): bool
+    public function validate($value): Validation
     {
-        return in_array($value, $this->values, true);
+        if (in_array($value, $this->values, true)) {
+            return Validation::successful();
+        }
+
+        return Validation::failedValue('Enum', $value);
     }
 
     /**
@@ -31,8 +38,10 @@ final class Enum implements Value
      */
     public function get($value)
     {
-        if (!$this->validate($value)) {
-            throw ValidationFailed::value('enum', $value);
+        $validation = $this->validate($value);
+
+        if ($validation->hasErrors()) {
+            throw ValidationFailed::fromValidation($validation);
         }
 
         return $value;

@@ -15,15 +15,30 @@ class AnyOfValues implements Value
     /**
      * @inheritDoc
      */
-    public function validate($value): bool
+    public function validate($value): Validation
     {
-        foreach($this->values as $valueItem) {
-            if ($valueItem->validate($value)) {
-                return true;
+        foreach ($this->values as $valueItem) {
+            if (!$valueItem->validate($value)->hasErrors()) {
+                return Validation::successful();
             }
         }
 
-        return false;
+        $errors = array_reduce(
+            $this->values,
+            function (array $errors, Value $valueItem) use ($value) {
+                foreach ($valueItem->validate($value)->errors() as $error) {
+                    $errors[] = $error;
+                }
+
+                return $errors;
+            },
+            []
+        );
+
+        return Validation::failedWithErrors(
+            '[AnyOfValues] validation failed:',
+            ...$errors
+        );
     }
 
     /**
@@ -31,27 +46,16 @@ class AnyOfValues implements Value
      */
     public function get($value)
     {
+        $validation = $this->validate($value);
+
+        if ($validation->hasErrors()) {
+            throw ValidationFailed::fromValidation($validation);
+        }
+
         foreach ($this->values as $valueItem) {
-            if ($valueItem->validate($value)) {
+            if (!$valueItem->validate($value)->hasErrors()) {
                 return $valueItem->get($value);
             }
         }
-
-        throw new ValidationFailed(
-            sprintf(
-                '%s (%s) is not valid value of: %s',
-                $value,
-                gettype($value),
-                implode(
-                    ', ',
-                    array_map(
-                        function (Value $value) {
-                            return get_class($value);
-                        },
-                        $this->values
-                    )
-                )
-            )
-        );
     }
 }

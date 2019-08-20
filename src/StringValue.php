@@ -8,10 +8,16 @@ final class StringValue implements Value
     /**
      * @inheritDoc
      */
-    public function validate($value): bool
+    public function validate($value): Validation
     {
-        return is_string($value)
-            || (is_object($value) && method_exists($value, '__toString'));
+        if (
+            is_string($value)
+            || (is_object($value) && method_exists($value, '__toString'))
+        ) {
+            return Validation::successful();
+        }
+
+        return Validation::failedValue('StringValue', $value);
     }
 
     /**
@@ -19,8 +25,10 @@ final class StringValue implements Value
      */
     public function get($value): string
     {
-        if (!$this->validate($value)) {
-            throw ValidationFailed::value('string', $value);
+        $validation = $this->validate($value);
+
+        if ($validation->hasErrors()) {
+            throw ValidationFailed::fromValidation($validation);
         }
 
         return $value;

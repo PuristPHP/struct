@@ -29,19 +29,19 @@ class EnumSpec extends ObjectBehavior
 
     function it_validates_against_set_of_values()
     {
-        $this->validate('ocramius')->shouldReturn(true);
-        $this->validate('yegor256')->shouldReturn(true);
-        $this->validate(null)->shouldReturn(true);
-        $this->validate(123)->shouldReturn(true);
-        $this->validate([123, 456])->shouldReturn(true);
+        $this->validate('ocramius')->callOnWrappedObject('hasErrors')->shouldReturn(false);
+        $this->validate('yegor256')->callOnWrappedObject('hasErrors')->shouldReturn(false);
+        $this->validate(null)->callOnWrappedObject('hasErrors')->shouldReturn(false);
+        $this->validate(123)->callOnWrappedObject('hasErrors')->shouldReturn(false);
+        $this->validate([123, 456])->callOnWrappedObject('hasErrors')->shouldReturn(false);
     }
 
     function it_fails_validation_with_values_not_in_set()
     {
-        $this->validate('taylor')->shouldReturn(false);
-        $this->validate('adam')->shouldReturn(false);
-        $this->validate('haha123')->shouldReturn(false);
-        $this->validate(123.0)->shouldReturn(false);
+        $this->validate('taylor')->callOnWrappedObject('hasErrors')->shouldReturn(true);
+        $this->validate('adam')->callOnWrappedObject('hasErrors')->shouldReturn(true);
+        $this->validate('haha123')->callOnWrappedObject('hasErrors')->shouldReturn(true);
+        $this->validate(123.0)->callOnWrappedObject('hasErrors')->shouldReturn(true);
     }
 
     function it_will_get_the_value_if_valid()

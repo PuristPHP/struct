@@ -16,7 +16,7 @@ abstract class AbstractStruct
 
     abstract protected function struct(): Struct;
 
-    public function valid(): bool
+    public function valid(): Validation
     {
         return $this->struct->validate($this->data);
     }

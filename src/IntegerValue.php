@@ -17,19 +17,19 @@ final class IntegerValue implements Value
     /**
      * @inheritDoc
      */
-    public function validate($value): bool
+    public function validate($value): Validation
     {
         if (is_bool($value) || filter_var($value, FILTER_VALIDATE_INT) === false) {
-            return false;
+            return Validation::failedValue('IntegerValue', $value);
         }
 
         foreach ($this->constraints as $constraint) {
             if (!$constraint->validate($value)) {
-                return false;
+                return Validation::failedValue('IntegerValue', $value, null, ...$this->constraints);
             }
         }
 
-        return true;
+        return Validation::successful();
     }
 
     /**
@@ -37,8 +37,10 @@ final class IntegerValue implements Value
      */
     public function get($value): int
     {
-        if (!$this->validate($value)) {
-            throw ValidationFailed::value('integer', $value, null, ...$this->constraints);
+        $validation = $this->validate($value);
+
+        if ($validation->hasErrors()) {
+            throw ValidationFailed::fromValidation($validation);
         }
 
         return (int) $value;

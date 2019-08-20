@@ -25,15 +25,15 @@ class AnyOfValuesSpec extends ObjectBehavior
 
     function it_passes_if_any_value_is_valid()
     {
-        $this->validate('12.0')->shouldReturn(true);
-        $this->validate(12.5)->shouldReturn(true);
-        $this->validate(12)->shouldReturn(true);
+        $this->validate('12.0')->callOnWrappedObject('hasErrors')->shouldreturn(false);
+        $this->validate(12.5)->callOnWrappedObject('hasErrors')->shouldreturn(false);
+        $this->validate(12)->callOnWrappedObject('hasErrors')->shouldreturn(false);
     }
 
     function it_fails_if_non_of_the_values_is_valid()
     {
-        $this->validate('hello')->shouldReturn(false);
-        $this->validate(true)->shouldReturn(false);
+        $this->validate('hello')->callOnWrappedObject('hasErrors')->shouldreturn(true);
+        $this->validate(true)->callOnWrappedObject('hasErrors')->shouldreturn(true);
     }
 
     function it_will_return_first_valid_value_in_format()

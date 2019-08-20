@@ -17,10 +17,21 @@ final class RequiredMember implements Member
     /**
      * @inheritDoc
      */
-    public function valid(array $input): bool
+    public function validate(array $input): Validation
     {
-        return array_key_exists($this->name, $input)
-            && $this->value->validate($input[$this->name]);
+        if (!array_key_exists($this->name, $input)) {
+            return Validation::failed(
+                sprintf('[RequiredMember] %s was missing from input array.', $this->name)
+            );
+        }
+
+        $validation = $this->value->validate($input[$this->name]);
+
+        if ($validation->hasErrors()) {
+            return Validation::failedMember('RequiredMember', $this->name, $validation);
+        }
+
+        return Validation::successful();
     }
 
     /**
@@ -30,14 +41,19 @@ final class RequiredMember implements Member
     {
         if (!array_key_exists($this->name, $input)) {
             throw new ValidationFailed(
-                "{$this->name} was missing from input array."
+                sprintf('[RequiredMember] %s was missing from input array.', $this->name)
             );
         }
 
         try {
             return [$this->name => $this->value->get($input[$this->name])];
         } catch (ValidationFailed $e) {
-            throw ValidationFailed::member($this->name, 'required', $e);
+            throw ValidationFailed::member('RequiredMember', $this->name, $e);
         }
+    }
+
+    public function name(): string
+    {
+        return $this->name;
     }
 }

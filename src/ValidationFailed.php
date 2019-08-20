@@ -8,26 +8,38 @@ use Purist\Struct\Constraint\Constraint;
 
 final class ValidationFailed extends \Exception
 {
+    private $errors = [];
+
     public function __construct(
         string $message = '',
-        int $code = 0,
         ?\Throwable $previous = null
     ) {
-        if ($previous !== null) {
-            $message .= PHP_EOL . $previous->getMessage();
+        $this->errors[] = $message;
+
+        if ($previous instanceof self) {
+            $this->errors[] = $previous->getMessage();
         }
 
-        parent::__construct($message, $code, $previous);
+        parent::__construct($message, 0, $previous);
     }
 
-    public static function member(
-        string $name,
-        string $type,
+    public static function fromValidation(
+        Validation $validation,
         ?\Throwable $previous = null
     ): self {
         return new self(
-            sprintf('Validation failed for %s member: %s', $type, $name),
-            0,
+            implode(PHP_EOL, $validation->errors()),
+            $previous,
+        );
+    }
+
+    public static function member(
+        string $type,
+        string $name,
+        ?\Throwable $previous = null
+    ): self {
+        return new self(
+            sprintf('[%s] %s validation failed.', $type, $name),
             $previous
         );
     }
@@ -46,7 +58,7 @@ final class ValidationFailed extends \Exception
                     function (array $messages, Constraint $constraint) use ($value) {
                         if (!$constraint->validate($value)) {
                             $messages[] = sprintf(
-                                'Constraint %s failed for: %s',
+                                'Constraint %s failed for value: %s',
                                 $constraint,
                                 $value
                             );
@@ -64,8 +76,12 @@ final class ValidationFailed extends \Exception
                     ]
                 )
             ),
-            0,
             $previous
         );
+    }
+
+    public function errors(): array
+    {
+        return $this->errors;
     }
 }

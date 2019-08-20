@@ -35,16 +35,16 @@ class OptionalMemberSpec extends ObjectBehavior
 
     function it_will_validate_input_array()
     {
-        $this->valid(['someInteger' => '123'])->shouldReturn(true);
+        $this->validate(['someInteger' => '123'])->callOnWrappedObject('hasErrors')->shouldReturn(false);
     }
 
     function it_will_not_validate_incorrect_array()
     {
-        $this->valid(['someInteger' => 'not'])->shouldReturn(false);
+        $this->validate(['someInteger' => 'not'])->callOnWrappedObject('hasErrors')->shouldReturn(true);
     }
 
     function it_will_pass_missing_name_from_input_array()
     {
-        $this->valid(['anotherInteger' => 345])->shouldReturn(true);
+        $this->validate(['anotherInteger' => 345])->callOnWrappedObject('hasErrors')->shouldReturn(false);
     }
 }

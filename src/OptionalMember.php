@@ -16,10 +16,19 @@ class OptionalMember implements Member
     /**
      * @inheritDoc
      */
-    public function valid(array $input): bool
+    public function validate(array $input): Validation
     {
-        return !array_key_exists($this->name, $input)
-            || $this->value->validate($input[$this->name]);
+        if (!array_key_exists($this->name, $input)) {
+            return Validation::successful();
+        }
+
+        $validation = $this->value->validate($input[$this->name]);
+
+        if (!$validation->hasErrors()) {
+            return Validation::successful();
+        }
+
+        return Validation::failedMember('OptionalMember', $this->name, $validation);
     }
 
     /**
@@ -34,7 +43,12 @@ class OptionalMember implements Member
         try {
             return [$this->name => $this->value->get($input[$this->name])];
         } catch (ValidationFailed $e) {
-            throw ValidationFailed::member($this->name, 'optional', $e);
+            throw ValidationFailed::member('OptionalMember', $this->name, $e);
         }
+    }
+
+    public function name(): string
+    {
+        return $this->name;
     }
 }

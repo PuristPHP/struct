@@ -16,26 +16,26 @@ class BooleanValueSpec extends ObjectBehavior
 
     function it_will_not_validate_invalid_booleans()
     {
-        $this->validate('string')->shouldReturn(false);
-        $this->validate(123)->shouldReturn(false);
-        $this->validate(new \stdClass())->shouldReturn(false);
-        $this->validate([])->shouldReturn(false);
-        $this->validate(123.123)->shouldReturn(false);
-        $this->validate(null)->shouldReturn(false);
+        $this->validate('string')->callOnWrappedObject('hasErrors')->shouldReturn(true);
+        $this->validate(123)->callOnWrappedObject('hasErrors')->shouldReturn(true);
+        $this->validate(new \stdClass())->callOnWrappedObject('hasErrors')->shouldReturn(true);
+        $this->validate([])->callOnWrappedObject('hasErrors')->shouldReturn(true);
+        $this->validate(123.123)->callOnWrappedObject('hasErrors')->shouldReturn(true);
+        $this->validate(null)->callOnWrappedObject('hasErrors')->shouldReturn(true);
     }
 
     function it_will_validate_booleans()
     {
-        $this->validate(true)->shouldReturn(true);
-        $this->validate('true')->shouldReturn(true);
-        $this->validate('on')->shouldReturn(true);
-        $this->validate('1')->shouldReturn(true);
-        $this->validate(1)->shouldReturn(true);
-        $this->validate(false)->shouldReturn(true);
-        $this->validate('false')->shouldReturn(true);
-        $this->validate('off')->shouldReturn(true);
-        $this->validate('0')->shouldReturn(true);
-        $this->validate(0)->shouldReturn(true);
+        $this->validate(true)->callOnWrappedObject('hasErrors')->shouldReturn(false);
+        $this->validate('true')->callOnWrappedObject('hasErrors')->shouldReturn(false);
+        $this->validate('on')->callOnWrappedObject('hasErrors')->shouldReturn(false);
+        $this->validate('1')->callOnWrappedObject('hasErrors')->shouldReturn(false);
+        $this->validate(1)->callOnWrappedObject('hasErrors')->shouldReturn(false);
+        $this->validate(false)->callOnWrappedObject('hasErrors')->shouldReturn(false);
+        $this->validate('false')->callOnWrappedObject('hasErrors')->shouldReturn(false);
+        $this->validate('off')->callOnWrappedObject('hasErrors')->shouldReturn(false);
+        $this->validate('0')->callOnWrappedObject('hasErrors')->shouldReturn(false);
+        $this->validate(0)->callOnWrappedObject('hasErrors')->shouldReturn(false);
     }
 
     function it_will_throw_exception_getting_invalid_values()

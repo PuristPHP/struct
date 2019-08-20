@@ -15,42 +15,47 @@ final class Struct implements Value
     /**
      * @inheritDoc
      */
-    public function validate($value): bool
+    public function validate($values): Validation
     {
-        if ($value instanceof \stdClass) {
-            $value = (array) $value;
+        if ($values instanceof \stdClass) {
+            $values = (array) $values;
         }
 
-        if (!is_array($value)) {
-            return false;
+        if (!is_array($values)) {
+            return Validation::failed(
+                sprintf(
+                    '[Struct] input need to be array, %s passed',
+                    gettype($values)
+                )
+            );
         }
 
-        foreach ($this->members as $member) {
-            if (!$member->valid($value)) {
-                return false;
-            }
-        }
-
-        return true;
+        return Validation::validateMembers(
+            'Struct',
+            $values,
+            ...$this->members
+        );
     }
 
     /**
      * @inheritDoc
      */
-    public function get($value): array
+    public function get($values): array
     {
-        if ($value instanceof \stdClass) {
-            $value = (array) $value;
+        if ($values instanceof \stdClass) {
+            $values = (array) $values;
         }
 
-        if (!is_array($value)) {
-            throw ValidationFailed::value('struct', $value);
+        $validation = $this->validate($values);
+
+        if ($validation->hasErrors()) {
+            throw ValidationFailed::fromValidation($validation);
         }
 
         return array_reduce(
             $this->members,
-            function (array $carry, Member $member) use ($value) {
-                return $carry + $member->get($value);
+            static function (array $carry, Member $member) use ($values) {
+                return $carry + $member->get($values);
             },
             []
         );

@@ -14,7 +14,6 @@ use Purist\Struct\OptionalMember;
 use Purist\Struct\PartialStruct;
 use Purist\Struct\RequiredMember;
 use Purist\Struct\StringValue;
-use Purist\Struct\Struct;
 use Purist\Struct\ValidationFailed;
 
 class PartialStructSpec extends ObjectBehavior
@@ -66,7 +65,7 @@ class PartialStructSpec extends ObjectBehavior
                     'aBoolean' => false,
                 ],
             ]
-        )->shouldReturn(false);
+        )->callOnWrappedObject('hasErrors')->shouldReturn(true);
     }
 
     function it_will_validate_arrays()
@@ -85,7 +84,7 @@ class PartialStructSpec extends ObjectBehavior
                     'aBoolean' => 'true',
                 ],
             ]
-        )->shouldReturn(true);
+        )->callOnWrappedObject('hasErrors')->shouldReturn(false);
     }
 
     function it_will_throw_exception_getting_invalid_values()

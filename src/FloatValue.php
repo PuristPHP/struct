@@ -8,10 +8,16 @@ final class FloatValue implements Value
     /**
      * @inheritDoc
      */
-    public function validate($value): bool
+    public function validate($value): Validation
     {
-        return is_bool($value) === false
-            && filter_var($value, FILTER_VALIDATE_FLOAT) !== false;
+        if (
+            is_bool($value) === false
+            && filter_var($value, FILTER_VALIDATE_FLOAT) !== false
+        ) {
+            return Validation::successful();
+        }
+
+        return Validation::failedValue('float', $value);
     }
 
     /**
@@ -19,8 +25,10 @@ final class FloatValue implements Value
      */
     public function get($value): float
     {
-        if (!$this->validate($value)) {
-            throw ValidationFailed::value('float', $value);
+        $validation = $this->validate($value);
+
+        if ($validation->hasErrors()) {
+            throw ValidationFailed::fromValidation($validation);
         }
 
         return filter_var($value, FILTER_VALIDATE_FLOAT);
